@@ -1,0 +1,50 @@
+@startuml Architecture
+
+' skinparam componentStyle rectangle
+skinparam Linetype ortho
+
+package "ProjectName" {
+
+    package "Frontend" {
+        package "Angular" as Angular {
+        }
+    }
+
+    package "Backend" {
+        package "WebApi" as WebApi {
+            [Mapping Rules]
+            [API Endpoints]
+        }
+
+        package "Shared" as Shared {
+            [DTOs]
+        }
+
+        package "DataAccess" as DataAccess {
+            package "Services" {
+                [AuthService]
+                [CardService]
+                [PackService]
+                [ListingService]
+                [MinigameService]
+            }
+            component "DbContext" as DbContext {
+                [DbSets]
+            }
+            package "Models" {
+            }
+        }
+    }
+}
+
+database "PostgreSQL" as Db
+
+Angular --> WebApi
+WebApi --> Shared
+WebApi --> DataAccess
+DataAccess --> Db
+
+Services --> DbContext
+DbContext --> Models
+
+@enduml

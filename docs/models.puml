@@ -1,0 +1,102 @@
+@startuml Models
+
+hide empty members
+
+skinparam Linetype ortho
+
+class IdentityUser <<Identity>> {
+    +Id : string <<PK>>
+    +UserName : string
+    +Email : string
+    +PasswordHash : string
+    ...
+}
+
+class User {
+    +Coins : int
+    .. navigational ..
+    +CardUsers : ICollection<CardUser>
+    +Listings : ICollection<Listing>
+}
+
+class Card {
+    +Id : int <<PK>>
+    +Name : string [100]
+    +Description : string? [1000]
+    +Rarity : CardRarity
+    +ImageUrl : string [500]
+    .. navigational ..
+    +CardUsers : ICollection<CardUser>
+    +Listings : ICollection<Listing>
+}
+
+enum CardRarity {
+    Common = 0
+    Uncommon = 1
+    Rare = 2
+    Epic = 3
+    Legendary = 4
+}
+
+' class CardUser {
+'     +UserId : string <<PK, FK>>
+'     +CardId : int <<PK, FK>>
+'     +Quantity : int
+'     .. navigational ..
+'     +User : User
+'     +Card : Card
+' }
+
+class CardUser {
+    +Id : int <<PK>>
+    +UserId : string <<FK>>
+    +CardId : int <<FK>>
+    .. navigational ..
+    +User : User
+    +Card : Card
+}
+
+class Listing {
+    +Id : int <<PK>>
+    +SellerId : string <<FK>>
+    +CardId : int <<FK>>
+    +Price : int
+    +CreatedAt : DateTime
+    +SoldAt : DateTime?
+    .. navigational ..
+    +Seller : User
+    +Card : Card
+}
+
+class Pack {
+    +Id : int <<PK>>
+    +Name : string [100]
+    +ImageUrl : string [500]
+    +Price : int
+    +CardCount : int
+    .. navigational ..
+    +DropRates : ICollection<PackDropRate>
+}
+
+class PackDropRate {
+    +PackId : int <<PK, FK>>
+    +Rarity : CardRarity <<PK>>
+    +Weight : int
+    .. navigational ..
+    +Pack : Pack
+}
+
+
+IdentityUser <|-- User
+Card ..> CardRarity
+PackDropRate ..> CardRarity
+
+CardUser }o--|| Card
+CardUser }o--|| User
+
+User ||--o{ Listing
+Card ||--o{ Listing
+
+Pack ||--o{ PackDropRate
+
+@enduml
