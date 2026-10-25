@@ -1,3 +1,4 @@
 <Solution>
   <Project Path="CardTrader.DataAccess/CardTrader.DataAccess.csproj" />
+  <Project Path="CardTrader.WebApi/CardTrader.WebApi.csproj" Id="1b1fc6a8-cfe3-4b13-90eb-6fe56f4d5e2e" />
 </Solution>
