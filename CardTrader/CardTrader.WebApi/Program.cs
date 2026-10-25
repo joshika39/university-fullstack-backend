@@ -1,10 +1,12 @@
 using CardTrader.DataAccess;
+using CardTrader.WebApi.Infrastructure;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddDataAccess(builder.Configuration);
+builder.Services.AddMapping();
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
