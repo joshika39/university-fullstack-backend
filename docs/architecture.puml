@@ -1,0 +1,47 @@
+@startuml Architecture
+
+skinparam Linetype ortho
+
+skinparam package {
+    BackgroundColor White
+}
+
+package "CardTrader" {
+    rectangle "Database" #FFF3E0;line:FB8C00 {
+        database "PostgreSQL" as Db
+    }
+    rectangle "Backend" #E8F5E9;line:43A047 {
+        package "DataAccess" {
+            rectangle "Services"
+            rectangle "DbContext"
+            rectangle "Models"
+        }
+        package "WebApi" {
+            rectangle "API Endpoints" as Endpoints
+            rectangle "Mapping Rules" as Mapping
+        }
+        package "Shared" {
+            rectangle "DTOs"
+        } 
+    }
+    rectangle "Frontend" #E3F2FD;line:1E88E5 {
+        rectangle "Angular"
+    }
+}
+
+Endpoints --> Mapping
+Services --> DbContext
+DbContext --> Models
+
+Angular ---> Endpoints
+
+Endpoints -> Services
+
+Mapping .> Models
+
+DTOs <. Mapping
+DTOs <. Endpoints
+
+Db <- DbContext
+
+@enduml
