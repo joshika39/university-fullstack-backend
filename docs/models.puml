@@ -4,7 +4,7 @@ hide empty members
 
 skinparam Linetype ortho
 
-class IdentityUser <<Identity>> {
+class IdentityUser <<Identity>> #EEEEEE;line:AAAAAA;text:888888 {
     +Id : string <<PK>>
     +UserName : string
     +Email : string
@@ -12,7 +12,7 @@ class IdentityUser <<Identity>> {
     ...
 }
 
-class User {
+class User #EEEEEE;line:AAAAAA;text:888888 {
     +Coins : int
     .. navigational ..
     +CardUsers : ICollection<CardUser>
@@ -22,12 +22,14 @@ class User {
 class Card {
     +Id : int <<PK>>
     +Name : string [100]
-    +Description : string? [1000]
     +Rarity : CardRarity
+    +Element : CardElement
+    +Description : string [200]
+    +Lore : string? [2000]
     +ImageUrl : string [500]
     .. navigational ..
-    +CardUsers : ICollection<CardUser>
-    +Listings : ICollection<Listing>
+    +<color:#888888>CardUsers : ICollection<CardUser></color>
+    +<color:#888888>Listings : ICollection<Listing></color>
 }
 
 enum CardRarity {
@@ -38,16 +40,17 @@ enum CardRarity {
     Legendary = 4
 }
 
-' class CardUser {
-'     +UserId : string <<PK, FK>>
-'     +CardId : int <<PK, FK>>
-'     +Quantity : int
-'     .. navigational ..
-'     +User : User
-'     +Card : Card
-' }
+enum CardElement {
+    Neutral = 0
+    Water = 1
+    Earth = 2
+    Fire = 3
+    Air = 4
+    Light = 5
+    Dark = 6
+}
 
-class CardUser {
+class CardUser #EEEEEE;line:AAAAAA;text:888888 {
     +Id : int <<PK>>
     +UserId : string <<FK>>
     +CardId : int <<FK>>
@@ -56,7 +59,7 @@ class CardUser {
     +Card : Card
 }
 
-class Listing {
+class Listing #EEEEEE;line:AAAAAA;text:888888 {
     +Id : int <<PK>>
     +SellerId : string <<FK>>
     +CardId : int <<FK>>
@@ -68,7 +71,7 @@ class Listing {
     +Card : Card
 }
 
-class Pack {
+class Pack #EEEEEE;line:AAAAAA;text:888888 {
     +Id : int <<PK>>
     +Name : string [100]
     +ImageUrl : string [500]
@@ -78,7 +81,7 @@ class Pack {
     +DropRates : ICollection<PackDropRate>
 }
 
-class PackDropRate {
+class PackDropRate #EEEEEE;line:AAAAAA;text:888888 {
     +PackId : int <<PK, FK>>
     +Rarity : CardRarity <<PK>>
     +Weight : int
@@ -87,16 +90,17 @@ class PackDropRate {
 }
 
 
-IdentityUser <|-- User
+IdentityUser <|-[#AAAAAA]- User
 Card ..> CardRarity
-PackDropRate ..> CardRarity
+Card ..> CardElement
+PackDropRate .[#AAAAAA].> CardRarity
 
-CardUser }o--|| Card
-CardUser }o--|| User
+CardUser }o-[#AAAAAA]-|| Card
+CardUser }o-[#AAAAAA]-|| User
 
-User ||--o{ Listing
-Card ||--o{ Listing
+User ||-[#AAAAAA]-o{ Listing
+Card ||-[#AAAAAA]-o{ Listing
 
-Pack ||--o{ PackDropRate
+Pack ||-[#AAAAAA]-o{ PackDropRate
 
 @enduml
