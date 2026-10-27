@@ -11,7 +11,7 @@ builder.Services.AddMapping();
 builder.Services.AddCors(options => options.AddPolicy("LocalFrontend", policy => policy
     .WithOrigins("http://localhost:4200", "http://127.0.0.1:4200")
     .AllowAnyHeader()
-    .WithMethods("GET")));
+    .AllowAnyMethod()));
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
