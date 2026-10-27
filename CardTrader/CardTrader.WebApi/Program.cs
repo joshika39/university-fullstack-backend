@@ -8,6 +8,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDataAccess(builder.Configuration);
 builder.Services.AddMapping();
 
+builder.Services.AddCors(options => options.AddPolicy("LocalFrontend", policy => policy
+    .WithOrigins("http://localhost:4200", "http://127.0.0.1:4200")
+    .AllowAnyHeader()
+    .AllowAnyMethod()));
+
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
@@ -38,7 +43,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(options => options.SwaggerEndpoint("/openapi/v1.json", "CardTrader API v1"));
 }
 
-app.UseHttpsRedirection();
+if (app.Environment.IsDevelopment())
+{
+    app.UseCors("LocalFrontend");
+}
+else
+{
+    app.UseHttpsRedirection();
+}
 
 app.UseAuthorization();
 
