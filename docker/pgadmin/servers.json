@@ -1,0 +1,13 @@
+{
+  "Servers": {
+    "1": {
+      "Name": "CardTrader",
+      "Group": "Servers",
+      "Host": "db",
+      "Port": 5432,
+      "MaintenanceDB": "cardtrader",
+      "Username": "user",
+      "SSLMode": "prefer"
+    }
+  }
+}
