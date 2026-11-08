@@ -179,6 +179,7 @@ public static class DbInitializer
             // UI checks
             new()
             {
+                Id = 901,
                 Name = "The Unknown",
                 Rarity = CardRarity.Common,
                 Element = CardElement.Neutral,
@@ -190,17 +191,7 @@ public static class DbInitializer
             },
             new()
             {
-                Name = "The Flattened",
-                Rarity = CardRarity.Uncommon,
-                Element = CardElement.Earth,
-                Description = "Born 3:4, raised 32:9. Bends grids and breaks UIs.",
-                Lore = "Legend says a careless designer once dragged its corner without holding Shift. "
-                    + "It has never been the same since, and neither have the layouts it touches. "
-                    + "Frontend developers whisper its name when cards overflow their containers.",
-                ImageUrl = "the-flattened.webp", // Deliberately wide image (~32:9) to test aspect ratio handling
-            },
-            new()
-            {
+                Id = 902,
                 Name = "The Translucent",
                 Rarity = CardRarity.Epic,
                 Element = CardElement.Light,
@@ -209,6 +200,18 @@ public static class DbInitializer
                     + "Against the night it glows like a lantern, but when the lights come on, it is nowhere to be seen. "
                     + "Only those who set a checkerboard background have ever seen its true form.",
                 ImageUrl = "the-translucent.webp", // Semi-transparent image to test alpha channel handling
+            },
+            new()
+            {
+                Id = 903,
+                Name = "The Flattened",
+                Rarity = CardRarity.Uncommon,
+                Element = CardElement.Earth,
+                Description = "Born 3:4, raised 32:9. Bends grids and breaks UIs.",
+                Lore = "Legend says a careless designer once dragged its corner without holding Shift. "
+                    + "It has never been the same since, and neither have the layouts it touches. "
+                    + "Frontend developers whisper its name when cards overflow their containers.",
+                ImageUrl = "the-flattened.webp", // Deliberately wide image (~32:9) to test aspect ratio handling
             },
         };
 
