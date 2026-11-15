@@ -1,4 +1,5 @@
-﻿using CardTrader.DataAccess.Models;
+﻿using CardTrader.DataAccess.Exceptions;
+using CardTrader.DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace CardTrader.DataAccess.Services;
@@ -21,7 +22,7 @@ internal class CardService : ICardService
     {
         var card = await _context.Cards.FirstOrDefaultAsync(c => c.Id == id);
         if (card is null)
-            throw new KeyNotFoundException($"Card with id {id} not found");
+            throw new EntityNotFoundException($"Card with id {id} not found");
 
         return card;
     }

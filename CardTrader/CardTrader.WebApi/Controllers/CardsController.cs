@@ -1,4 +1,5 @@
-﻿using CardTrader.DataAccess.Services;
+﻿using CardTrader.DataAccess.Exceptions;
+using CardTrader.DataAccess.Services;
 using CardTrader.Shared.Dtos;
 using MapsterMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -40,7 +41,7 @@ public class CardsController : ControllerBase
 
             return cardResponseDto;
         }
-        catch (KeyNotFoundException)
+        catch (EntityNotFoundException)
         {
             return NotFound();
         }
