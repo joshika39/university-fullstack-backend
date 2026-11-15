@@ -1,5 +1,4 @@
-﻿using CardTrader.DataAccess.Exceptions;
-using CardTrader.DataAccess.Services;
+﻿using CardTrader.DataAccess.Services;
 using CardTrader.Shared.Dtos;
 using MapsterMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -34,16 +33,9 @@ public class CardsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<CardResponseDto>> GetCardById([FromRoute] int id)
     {
-        try
-        {
-            var card = await _cardService.GetByIdAsync(id);
-            var cardResponseDto = _mapper.Map<CardResponseDto>(card);
+        var card = await _cardService.GetByIdAsync(id);
+        var cardResponseDto = _mapper.Map<CardResponseDto>(card);
 
-            return cardResponseDto;
-        }
-        catch (EntityNotFoundException)
-        {
-            return NotFound();
-        }
+        return cardResponseDto;
     }
 }
