@@ -46,10 +46,24 @@ public class ExceptionToProblemDetailsHandler : IExceptionHandler
 
     private static int? MapToStatusCode(Exception exception) => exception switch
     {
+        // User exceptions
+        InvalidCredentialsException or
+        UserLockedOutException or
+        InvalidRefreshTokenException =>
+            StatusCodes.Status401Unauthorized,
+        DuplicateUserException =>
+            StatusCodes.Status409Conflict,
+
+        // Common exceptions
+        AccessDeniedException =>
+            StatusCodes.Status403Forbidden,
         EntityNotFoundException =>
             StatusCodes.Status404NotFound,
+
+        // Framework exceptions
         ValidationException =>
             StatusCodes.Status400BadRequest,
+
         _ => null
     };
 }

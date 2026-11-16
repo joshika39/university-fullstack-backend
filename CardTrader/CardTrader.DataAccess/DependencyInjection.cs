@@ -1,4 +1,6 @@
-﻿using CardTrader.DataAccess.Services;
+﻿using CardTrader.DataAccess.Models;
+using CardTrader.DataAccess.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,8 +17,25 @@ public static class DependencyInjection
             .UseNpgsql(connectionString)
         );
 
+        // Identity
+        services.AddIdentity<User, IdentityRole>(options =>
+        {
+            // Password
+            options.Password.RequiredLength = 6; // Default
+
+            // Lockout
+            options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5); // Default
+            options.Lockout.MaxFailedAccessAttempts = 5; // Default
+
+            // User
+            options.User.RequireUniqueEmail = true;
+        })
+        .AddEntityFrameworkStores<CardTraderDbContext>()
+        .AddDefaultTokenProviders();
+
         // Services
         services.AddScoped<ICardService, CardService>();
+        services.AddScoped<IUsersService, UsersService>();
 
         return services;
     }
