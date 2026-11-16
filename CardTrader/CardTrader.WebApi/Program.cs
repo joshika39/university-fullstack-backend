@@ -1,12 +1,19 @@
-using CardTrader.DataAccess;
-using CardTrader.WebApi.Infrastructure;
 using System.Text.Json.Serialization;
+using CardTrader.DataAccess;
+using CardTrader.DataAccess.Config;
+using CardTrader.DataAccess.Models;
+using CardTrader.WebApi.Infrastructure;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddDataAccess(builder.Configuration);
 builder.Services.AddMapping();
+
+// JWT settings: register in DI as IOptions<JwtSettings> (UsersService)
+var jwtSection = builder.Configuration.GetSection("JwtSettings");
+builder.Services.Configure<JwtSettings>(jwtSection);
 
 builder.Services.AddCors(options => options.AddPolicy("LocalFrontend", policy => policy
     .WithOrigins("http://localhost:4200", "http://127.0.0.1:4200")
@@ -39,7 +46,9 @@ app.UseStatusCodePages();
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<CardTraderDbContext>();
-    DbInitializer.Initialize(context);
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+
+    DbInitializer.Initialize(context, userManager);
 }
 
 // Configure the HTTP request pipeline.

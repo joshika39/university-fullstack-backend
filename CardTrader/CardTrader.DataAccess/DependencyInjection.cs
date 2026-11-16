@@ -35,6 +35,7 @@ public static class DependencyInjection
 
         // Services
         services.AddScoped<ICardService, CardService>();
+        services.AddScoped<IUsersService, UsersService>();
 
         return services;
     }

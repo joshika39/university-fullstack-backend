@@ -1,20 +1,47 @@
 ﻿using CardTrader.DataAccess.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace CardTrader.DataAccess;
 
 public static class DbInitializer
 {
-    public static void Initialize(CardTraderDbContext context)
+    public static void Initialize(CardTraderDbContext context, UserManager<User>? userManager = null)
     {
         // Run migrations
         context.Database.Migrate();
+
+        // Seed users
+        if (userManager is not null)
+            SeedUsersAsync(userManager).GetAwaiter().GetResult();
 
         // Seed sample data
         SeedCards(context);
 
         // Save changes to the DB
         context.SaveChanges();
+    }
+
+    private static async Task SeedUsersAsync(UserManager<User> userManager)
+    {
+        // Test user data
+        const string testUserName = "testuser";
+        const string testEmail = "test@example.com";
+        const string testPassword = "Test@123";
+
+        // Confirm user to be seeded does not exist
+        var testUser = await userManager.FindByEmailAsync(testEmail);
+        if (testUser is not null)
+            return;
+
+        // Create test user
+        testUser = new User { UserName = testUserName, Email = testEmail };
+        var result = await userManager.CreateAsync(testUser, testPassword);
+        if (!result.Succeeded)
+        {
+            var errors = string.Join(" ", result.Errors.Select(e => e.Description));
+            throw new InvalidOperationException($"Test user seeding failed: {errors}");
+        }
     }
 
     private static void SeedCards(CardTraderDbContext context)
